@@ -14,13 +14,31 @@ def rotate_dial(current, input):
     return current
 
 if __name__ == "__main__":
-    file_path='day1 stuff/password.txt'
+    file_path = 'day1 stuff/password.txt'
     lines = read_lines_from_file(file_path)
-    current=50
-    count=0
+    current = 50
+    
+    total_password = 0
+
     for line in lines:
-        current=rotate_dial(current, line.strip())
-        if current==0:
-            count+=1
+        line = line.strip()
+        if not line: continue 
+        
+        direction = line[0]
+        distance = int(line[1:])
+    
+        total_password += distance // 100
+        
+        remainder = distance % 100
+        
+        if direction == 'L':
+            if 0 < current <= remainder:
+                total_password += 1
+                
+        elif direction == 'R':
+            if current + remainder >= 100:
+                total_password += 1
+        current = rotate_dial(current, line)
+
     print("Final position:", current)
-    print("Number of times at position 0:", count)
+    print("Total password (Part 2):", total_password)
